@@ -26,12 +26,27 @@
                     </div>
           
                         <div class="row mt-4">
-                            <div class="col-md-4  float-start">
+                            <div class="col-md-2  float-start">
                                 <a href="{{ route('categories.create') }}">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" style="fill: #00a8bd;transform: ;msFilter:;">
                                         <path d="M4.5 8.552c0 1.995 1.505 3.5 3.5 3.5s3.5-1.505 3.5-3.5-1.505-3.5-3.5-3.5-3.5 1.505-3.5 3.5zM19 8h-2v3h-3v2h3v3h2v-3h3v-2h-3zM4 19h10v-1c0-2.757-2.243-5-5-5H7c-2.757 0-5 2.243-5 5v1h2z"></path>
                                     </svg>
                                 </a>
+                            </div>
+                            <div class="col-md-10  float-end">
+                                <div class="form-group">
+                                    <form action="{{ URL::current() }}" method="GET" class="d-flex justify-content-between mb-4">
+                                    
+                                        <x-form.input name="name" placeholder="Name" class="mx-2" :value="request('name')"/>
+                                        <select name="status" class="form-control mx-2">
+                                            <option value="">All</option>
+                                            <option value="active" @selected(request('status') == 'active')>Active</option>
+                                            <option value="inactive" @selected(request('status') == 'inactive')>Inactive</option>
+                                        </select>
+                            
+                                        <button type="submit" class="btn btn-dark rounded-5 mx-2">filter</button>
+                                    </form>
+                                </div>
                             </div>
                         </div> 
                     <div class="card-body">
@@ -44,6 +59,7 @@
                                         <th class="text-center"> Name </th>
                                         <th class="text-center"> Image </th>
                                         <th class="text-center"> Parent</th>
+                                        <th class="text-center"> Status</th>
                                         <th class="text-center">Created At</th>
                                         <th class="text-center">Edit</th>
                                         <th class="text-center">Delete</th>
@@ -58,7 +74,7 @@
                                                 <td>{{ $category->name}}</td>
                                                 <td><img src="{{ asset('storage/'.$category->image) }}" height="50" width="50"></td>
                                                 <td style="">{{$category->parent_id}}</td>
-                                            
+                                                <td style="">{{$category->status}}</td>
                                                 <td style="">{{$category->created_at}}</td>
                                                 <td>
                                                     <a class="btn" href="{{ route('categories.edit',$category->id) }}">
@@ -89,7 +105,7 @@
                                     
                                 </tbody>
                             </table>
-
+                            {{ $categories->withQueryString()->links() }}
                         </div>
                     </div>
                 </div>
