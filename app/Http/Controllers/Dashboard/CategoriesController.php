@@ -20,10 +20,17 @@ class CategoriesController extends Controller
     {
         //
         $request = request();
-        $categories = Category::filter($request->query())
-            // ->latest('name')
-            ->orderBy('name')
+        $categories = Category::leftJoin('categories as parents', 'parents.id', '=', 'categories.parent_id')
+            ->select([
+                'categories.*',
+                'parents.name as parent_name'
+            ])
+            ->filter($request->query())
+            ->orderBy('categories.name')
+            // ->withTrashed()
             ->paginate(); 
+
+
         // $query = Category::query();
         // if($name =  $request->query('name'))
         // {
@@ -166,20 +173,39 @@ class CategoriesController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Category $category)
     {
         //
-         $category = Category::findOrFail($id);
          $category->delete();
 
-         if($category->image)
+        return Redirect::route('categories.index')->with('success', 'Category Is Deleted');
+    }
+
+    public function trash()
+    {
+        $categories = Category::onlyTrashed()->paginate();
+        return view('dashboard.categories.trash', compact('categories'));
+    }
+
+    public function restore(Request $request, $id)
+    {
+        $category = Category::onlyTrashed()->findOrFail($id);
+        $category->restore();
+
+        return redirect()->route('categories.trash')->with('success', 'Category Is Restored');;
+    }
+
+    public function forceDelete($id)
+    {
+        $category = Category::onlyTrashed()->findOrFail($id);
+        $category->forceDelete();
+
+        if($category->image)
          {
              Storage::disk('public')->delete($category->image);
          }
 
-        //Category::destroy($id);
-
-        return Redirect::route('categories.index')->with('success', 'Category Is Deleted');
+        return redirect()->route('categories.trash')->with('success', 'Category Is Deleted Forever');;
     }
 
     protected function uploadImage(Request $request)

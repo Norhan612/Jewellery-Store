@@ -4,12 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Validation\Rule;
 use Illuminate\Database\Eloquent\Builder;
 
 class Category extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
     protected $table = 'categories';
     protected $fillable = [
         'name',
@@ -29,11 +30,11 @@ class Category extends Model
     {
         if($filters['name'] ?? false)
         {
-            $builder->where('name', 'LIKE', "%{$filters['name']}%");
+            $builder->where('categories.name', 'LIKE', "%{$filters['name']}%");
         }
         if($filters['status'] ?? false)
         {
-            $builder->where('status', '=', $filters['status']);
+            $builder->where('categories.status', '=', $filters['status']);
         }
 
     }
