@@ -20,10 +20,19 @@ class CategoriesController extends Controller
     {
         //
         $request = request();
-        $categories = Category::leftJoin('categories as parents', 'parents.id', '=', 'categories.parent_id')
-            ->select([
-                'categories.*',
-                'parents.name as parent_name'
+        $categories = Category::with('parent')
+            // leftJoin('categories as parents', 'parents.id', '=', 'categories.parent_id')
+            // ->select([
+            //     'categories.*',
+            //     'parents.name as parent_name'
+            // ])
+            //->select('categories.*')
+           //->selectRaw('(SELECT COUNT(*) FROM products WHERE status = "active" AND category_id = categories.id) as products_count')
+           //->addSelect(DB::raw('(SELECT COUNT(*) FROM products WHERE category_id = categories.id) as products_count'))
+           ->withCount([
+                'products as products_number' => function($query) {
+                    $query->where('status', '=', 'active');
+                }
             ])
             ->filter($request->query())
             ->orderBy('categories.name')
@@ -95,9 +104,12 @@ class CategoriesController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Category $category)
     {
         //
+        return view('dashboard.categories.show', [
+            'category' => $category
+        ]);
     }
 
     /**

@@ -61,6 +61,7 @@
                                         <th class="text-center"> Name </th>
                                         <th class="text-center"> Image </th>
                                         <th class="text-center"> Parent</th>
+                                        <th class="text-center"> Products #</th>
                                         <th class="text-center"> Status</th>
                                         <th class="text-center">Created At</th>
                                         <th class="text-center">Edit</th>
@@ -73,9 +74,11 @@
                                         @forelse ($categories as $category)
                                             <tr>
                                                 <td>{{$category->id}}</td>
-                                                <td>{{ $category->name}}</td>
+                                                <td><a href="{{ route('categories.show', $category->id) }}">{{ $category->name}}</a></td>
                                                 <td><img src="{{ asset('storage/'.$category->image) }}" height="50" width="50"></td>
-                                                <td style="">{{$category->parent_name}}</td>
+                                                <td style="">{{$category->parent->name}}</td>
+                                                <td style="">{{$category->products_number}}</td>
+                                                
                                                 <td style="">{{$category->status}}</td>
                                                 <td style="">{{$category->created_at}}</td>
                                                 <td>
@@ -101,7 +104,7 @@
                                             </tr>
                                         @empty
                                             <tr>
-                                                <td colspan="6" class="text-center text-danger fw-bold">No categories defined. </td>
+                                                <td colspan="7" class="text-center text-danger fw-bold">No categories defined. </td>
                                             </tr>    
                                         @endforelse
                                     

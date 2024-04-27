@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Validation\Rule;
 use Illuminate\Database\Eloquent\Builder;
+use App\Models\Product;
 
 class Category extends Model
 {
@@ -22,6 +23,27 @@ class Category extends Model
     ];
 
 
+    public function products()
+    {
+        return $this->hasMany(Product::class, 'category_id', 'id');
+    }
+
+    public function parent()
+    {
+        //if relation return null => using fun withDefault
+        return $this->belongsTo(Category::class, 'parent_id', 'id')
+            ->withDefault([
+                'name' => '-'
+            ]);
+    }
+
+    public function children()
+    {
+        return $this->hasMany(Category::class, 'parent_id', 'id');
+    }
+
+
+    //Local Scope
     public function scopeActive(Builder $builder)
     {
         $builder->where('status', '=', 'active');
@@ -53,6 +75,7 @@ class Category extends Model
 
     // }
 
+   // Validation
     public static function rules($id = 0)
     {
         return [
