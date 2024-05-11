@@ -16,7 +16,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <!-- Theme style -->
   <link rel="stylesheet" href="{{ asset('dist/css/adminlte.min.css') }}">
 
-
+  @stack('styles')
 
 </head>
 
@@ -266,6 +266,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <!-- AdminLTE App -->
 <script src="{{ asset('dist/js/adminlte.min.js') }}"></script>
 
+<script src="{{ asset('js/app.js') }}"></script>
+@stack('scripts')
 
 </body>
 </html>

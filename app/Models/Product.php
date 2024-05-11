@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Scopes\StoreScope;
 use App\Models\Category;
 use App\Models\Store;
+use App\Models\Tag;
 
 class Product extends Model
 {
@@ -35,5 +36,17 @@ class Product extends Model
     public function store()
     {
         return $this->belongsTo(Store::class, 'store_id', 'id');
+    }
+
+    public function tags()
+    {
+        return $this->belongsToMany(
+            Tag::class,     // Related Model
+            'product_tag',  // Pivot table name
+            'product_id',   // FK in pivot table for the current model
+            'tag_id',       // FK in pivot table for the related model
+            'id',           // PK current model
+            'id'            // PK related model
+        );
     }
 }
