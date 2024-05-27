@@ -9,7 +9,7 @@ use App\Http\Controllers\Dashboard\ProductsController;
 
 
 Route::group([
-    'middleware' => ['auth'],
+    'middleware' => ['auth', 'auth.role'],
     'prefix' => 'dashboard',
 
 ], function () {
