@@ -5,7 +5,7 @@ use App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Front\HomeController;
 use App\Http\Controllers\Front\ProductsController;
-
+use App\Http\Controllers\Front\CartController;
 
 
 
@@ -38,6 +38,8 @@ Route::middleware('auth')->group(function () {
 
 Route::get('/products', [ProductsController::class, 'index'])->name('front.products.index');
 Route::get('/products/{product:slug}', [ProductsController::class, 'show'])->name('front.products.show');
+
+Route::resource('cart', CartController::class);
 
 require __DIR__.'/auth.php';
 require __DIR__.'/dashboard.php';
