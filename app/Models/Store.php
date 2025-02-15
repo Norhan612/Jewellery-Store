@@ -8,7 +8,8 @@ use App\Models\Product;
 
 class Store extends Model
 {
-    use HasFactory;
+    use HasFactory, Notifiable;
+    
     protected $table = 'stores';
 
     public function products()
