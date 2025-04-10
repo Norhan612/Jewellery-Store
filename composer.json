@@ -26,12 +26,11 @@
         "psr-4": {
             "App\\": "app/",
             "Database\\Factories\\": "database/factories/",
-            "Database\\Seeders\\": "database/seeders/",
-
-            "files": [
-                "app/Helpers/Currency.php"
-            ]
-        }
+            "Database\\Seeders\\": "database/seeders/"
+        },
+        "files": [
+            "app/Helpers/Currency.php"
+        ]
     },
     "autoload-dev": {
         "psr-4": {
